@@ -35,9 +35,9 @@
     /* Ring */
     .ring-wrap {
       position: relative;
-      width: 160px;
-      height: 160px;
-      margin-bottom: 8px;
+      width: 200px;
+      height: 200px;
+      margin-bottom: 10px;
     }
     .ring-wrap svg { transform: rotate(-90deg); }
     .ring-center {
@@ -50,7 +50,7 @@
       gap: 4px;
     }
     #timeDisplay {
-      font-size: 32px;
+      font-size: 40px;
       font-weight: 700;
       line-height: 1;
       letter-spacing: -1px;
@@ -66,7 +66,7 @@
       font-size: 12px;
       padding: 7px 16px;
       border-radius: 20px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       display: none;
       align-items: center;
       gap: 6px;
@@ -89,28 +89,60 @@
     .btn-row {
       display: flex;
       gap: 10px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
+      width: 100%;
+      max-width: 340px;
     }
     button {
       border: none;
-      border-radius: 12px;
+      border-radius: 14px;
       font-size: 15px;
       font-weight: 600;
       cursor: pointer;
-      padding: 13px 24px;
       transition: opacity 0.15s, transform 0.1s;
     }
     button:active { transform: scale(0.96); }
-    #btnStart  { background: #22c55e; color: #fff; }
-    #btnStop   { background: #ef4444; color: #fff; display: none; animation: pulse 1.5s infinite; }
-    #btnReset  { background: #1e293b; color: #94a3b8; border: 1px solid #334155; padding: 13px 16px; }
+
+    /* Start/Stop — büyük, tam genişlik */
+    #btnStart {
+      background: #22c55e;
+      color: #fff;
+      flex: 1;
+      padding: 18px 24px;
+      font-size: 17px;
+    }
+    #btnStop {
+      background: #ef4444;
+      color: #fff;
+      flex: 1;
+      padding: 18px 24px;
+      font-size: 17px;
+      display: none;
+      animation: pulse 1.5s infinite;
+    }
+    /* Durdur (pause) — canlı sayaç duraklatma */
+    #btnPause {
+      background: #1e293b;
+      color: #fbbf24;
+      border: 1px solid #78350f;
+      padding: 18px 16px;
+      display: none;
+      font-size: 17px;
+    }
+    #btnReset {
+      background: #1e293b;
+      color: #64748b;
+      border: 1px solid #334155;
+      padding: 18px 16px;
+      font-size: 17px;
+    }
 
     /* Manual input */
     .divider {
       font-size: 11px;
       color: #334155;
       letter-spacing: 0.1em;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .input-row {
       display: flex;
@@ -119,27 +151,88 @@
       max-width: 340px;
       margin-bottom: 6px;
     }
-    input[type="text"] {
+    /* Gizli gerçek input — text tipinde, klavye açmak için */
+    #manualInput {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      width: 1px;
+      height: 1px;
+    }
+    /* Görünen kutu */
+    .fake-input {
       flex: 1;
       background: #1e293b;
       border: 1px solid #334155;
       border-radius: 12px;
       padding: 13px 16px;
       color: #f1f5f9;
-      font-size: 15px;
-      outline: none;
-      -webkit-appearance: none;
+      font-size: 17px;
+      cursor: text;
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      transition: border-color 0.2s;
     }
-    input[type="text"]::placeholder { color: #475569; }
-    input[type="text"]:focus { border-color: #3b82f6; }
-    #btnAdd { background: #3b82f6; color: #fff; padding: 13px 18px; }
+    .fake-input.focused { border-color: #3b82f6; }
+    .fake-input .placeholder { color: #475569; font-size: 14px; }
+    .fake-input .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 20px;
+      background: #3b82f6;
+      margin-left: 1px;
+      vertical-align: middle;
+      animation: blink 1s infinite;
+    }
+    #btnAdd {
+      background: #3b82f6;
+      color: #fff;
+      padding: 13px 18px;
+      font-size: 15px;
+    }
     #errorMsg { font-size: 12px; color: #f87171; min-height: 18px; margin-bottom: 4px; }
+
+    /* Numpad */
+    #numpad {
+      display: none;
+      width: 100%;
+      max-width: 340px;
+      margin-bottom: 8px;
+      gap: 8px;
+      flex-direction: column;
+    }
+    #numpad.open { display: flex; }
+    .numpad-row { display: flex; gap: 8px; }
+    .numpad-row button {
+      flex: 1;
+      background: #1e293b;
+      color: #f1f5f9;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 16px 8px;
+      font-size: 20px;
+      font-weight: 500;
+    }
+    .numpad-row button.special {
+      background: #0f172a;
+      color: #94a3b8;
+      font-size: 16px;
+    }
+    .numpad-row button.colon {
+      background: #1e3a5f;
+      color: #93c5fd;
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .numpad-row button:active { background: #334155; transform: scale(0.94); }
 
     /* Sessions */
     #sessionList {
       width: 100%;
       max-width: 340px;
-      margin-top: 20px;
+      margin-top: 16px;
       background: #1e293b;
       border-radius: 14px;
       overflow: hidden;
@@ -186,11 +279,11 @@
 
 <!-- Ring -->
 <div class="ring-wrap">
-  <svg width="160" height="160" viewBox="0 0 160 160">
-    <circle cx="80" cy="80" r="64" fill="none" stroke="#1e293b" stroke-width="12"/>
-    <circle id="ringArc" cx="80" cy="80" r="64" fill="none" stroke="#22c55e"
-      stroke-width="12" stroke-linecap="round"
-      stroke-dasharray="402.1 402.1" stroke-dashoffset="0"
+  <svg width="200" height="200" viewBox="0 0 200 200">
+    <circle cx="100" cy="100" r="84" fill="none" stroke="#1e293b" stroke-width="14"/>
+    <circle id="ringArc" cx="100" cy="100" r="84" fill="none" stroke="#22c55e"
+      stroke-width="14" stroke-linecap="round"
+      stroke-dasharray="527.8 527.8" stroke-dashoffset="0"
       style="transition: stroke-dasharray .5s, stroke .5s"/>
   </svg>
   <div class="ring-center">
@@ -200,11 +293,11 @@
 </div>
 
 <!-- Status -->
-<div id="statusActive" class="status active">
+<div id="statusActive" class="status active" style="display:none">
   <span class="dot">●</span>
   <span id="statusText">Mola başladı</span>
 </div>
-<div id="statusOver" class="status over">
+<div id="statusOver" class="status over" style="display:none">
   ⚠️ 40 dakika limitini aştınız!
 </div>
 
@@ -212,18 +305,51 @@
 <div class="btn-row">
   <button id="btnStart" onclick="startLive()">▶ Molayı Başlat</button>
   <button id="btnStop"  onclick="stopLive()">⏹ Molayı Bitir</button>
+  <button id="btnPause" onclick="pauseLive()">⏸</button>
   <button id="btnReset" onclick="resetAll()">↺</button>
 </div>
 
 <div class="divider">— ya da süreyi manuel girin —</div>
 
-<!-- Manual input -->
+<!-- Manual input — özel numpad ile -->
+<input type="text" id="manualInput" autocomplete="off" />
 <div class="input-row">
-  <input type="text" id="manualInput" placeholder="Dakika (ör: 10 ya da 5:30)" inputmode="decimal"
-    onkeydown="if(event.key==='Enter') addManual()" />
+  <div class="fake-input" id="fakeInput" onclick="openNumpad()">
+    <span class="placeholder" id="fakePlaceholder">Süre (ör: 10 ya da 5:30)</span>
+    <span id="fakeValue" style="display:none"></span>
+    <span class="cursor" id="fakeCursor" style="display:none"></span>
+  </div>
   <button id="btnAdd" onclick="addManual()">Ekle</button>
 </div>
 <div id="errorMsg"></div>
+
+<!-- Custom Numpad -->
+<div id="numpad">
+  <div class="numpad-row">
+    <button onclick="numpadKey('1')">1</button>
+    <button onclick="numpadKey('2')">2</button>
+    <button onclick="numpadKey('3')">3</button>
+  </div>
+  <div class="numpad-row">
+    <button onclick="numpadKey('4')">4</button>
+    <button onclick="numpadKey('5')">5</button>
+    <button onclick="numpadKey('6')">6</button>
+  </div>
+  <div class="numpad-row">
+    <button onclick="numpadKey('7')">7</button>
+    <button onclick="numpadKey('8')">8</button>
+    <button onclick="numpadKey('9')">9</button>
+  </div>
+  <div class="numpad-row">
+    <button class="colon" onclick="numpadKey(':')">:</button>
+    <button onclick="numpadKey('0')">0</button>
+    <button class="special" onclick="numpadBackspace()">⌫</button>
+  </div>
+  <div class="numpad-row">
+    <button class="special" onclick="closeNumpad()" style="flex:1">Kapat</button>
+    <button onclick="addManual()" style="flex:2; background:#3b82f6; color:#fff; border:none;">Ekle ✓</button>
+  </div>
+</div>
 
 <!-- Session list -->
 <div id="sessionList" style="display:none">
@@ -237,14 +363,59 @@
 
 <script>
   const TOTAL = 40 * 60;
+  const circumference = 2 * Math.PI * 84; // ~527.8
+
   let remaining = TOTAL;
   let sessions = [];
   let running = false;
+  let paused = false;
   let activeStart = null;
+  let pausedElapsed = 0; // paused iken biriken saniye
   let ticker = null;
+  let inputVal = '';
+  let numpadOpen = false;
 
-  const circumference = 2 * Math.PI * 64; // 402.1
+  /* ── Numpad ── */
+  function openNumpad() {
+    numpadOpen = true;
+    document.getElementById('numpad').classList.add('open');
+    document.getElementById('fakeInput').classList.add('focused');
+    document.getElementById('fakeCursor').style.display = 'inline-block';
+    renderFakeInput();
+  }
+  function closeNumpad() {
+    numpadOpen = false;
+    document.getElementById('numpad').classList.remove('open');
+    document.getElementById('fakeInput').classList.remove('focused');
+    document.getElementById('fakeCursor').style.display = 'none';
+    renderFakeInput();
+  }
+  function numpadKey(k) {
+    // Kolon sadece bir kez
+    if (k === ':' && inputVal.includes(':')) return;
+    // Max 5 karakter: "mm:ss" veya "mmm"
+    if (inputVal.length >= 5) return;
+    inputVal += k;
+    renderFakeInput();
+  }
+  function numpadBackspace() {
+    inputVal = inputVal.slice(0, -1);
+    renderFakeInput();
+  }
+  function renderFakeInput() {
+    const ph = document.getElementById('fakePlaceholder');
+    const fv = document.getElementById('fakeValue');
+    if (inputVal) {
+      ph.style.display = 'none';
+      fv.style.display = 'inline';
+      fv.textContent = inputVal;
+    } else {
+      ph.style.display = 'inline';
+      fv.style.display = 'none';
+    }
+  }
 
+  /* ── Helpers ── */
   function fmt(secs) {
     const neg = secs < 0;
     const abs = Math.abs(secs);
@@ -252,66 +423,71 @@
     const s = String(abs % 60).padStart(2, '0');
     return (neg ? '-' : '') + m + ':' + s;
   }
-
   function fmtClock(date) {
     return date.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
   }
-
   function parseInput(val) {
     const str = val.trim();
     if (!str) return null;
     if (str.includes(':')) {
       const [m, s] = str.split(':').map(Number);
       if (isNaN(m) || isNaN(s)) return null;
-      return m * 60 + s;
-    }
-    if (str.includes('.')) {
-      const f = parseFloat(str);
-      return isNaN(f) ? null : Math.round(f * 60);
+      return m * 60 + (s || 0);
     }
     const n = parseInt(str, 10);
     return isNaN(n) ? null : n * 60;
   }
 
+  /* ── Render ── */
   function render() {
     const over = remaining < 0;
-    const pct = Math.max(0, remaining / TOTAL);
+    const pct  = Math.max(0, remaining / TOTAL);
     const dash = pct * circumference;
 
-    // Ring
     document.getElementById('timeDisplay').textContent = fmt(remaining);
-    document.getElementById('timeDisplay').style.fontSize = over ? '22px' : '32px';
+    document.getElementById('timeDisplay').style.fontSize = over ? '26px' : '40px';
     document.getElementById('ringArc').setAttribute('stroke-dasharray', `${dash} ${circumference}`);
 
-    // Color
     let color = '#22c55e';
-    if (over)             color = '#ef4444';
+    if (over)                   color = '#ef4444';
     else if (remaining < 5*60)  color = '#f97316';
     else if (remaining < 15*60) color = '#eab308';
     document.getElementById('ringArc').setAttribute('stroke', color);
     document.getElementById('totalDisplay').style.color = color;
 
-    // Status banners
     document.getElementById('statusActive').style.display = running ? 'flex' : 'none';
     document.getElementById('statusOver').style.display   = over ? 'flex' : 'none';
 
-    // Buttons
-    document.getElementById('btnStart').style.display = running ? 'none' : '';
-    document.getElementById('btnStop').style.display  = running ? '' : 'none';
-    document.getElementById('btnStart').disabled = remaining <= 0;
-    document.getElementById('btnStart').style.opacity = remaining <= 0 ? '0.45' : '1';
+    // Buton görünürlükleri
+    const bs = document.getElementById('btnStart');
+    const bst = document.getElementById('btnStop');
+    const bp  = document.getElementById('btnPause');
 
-    // Total used
+    if (running && !paused) {
+      bs.style.display  = 'none';
+      bst.style.display = '';
+      bp.style.display  = '';
+    } else if (paused) {
+      bs.style.display  = '';
+      bs.textContent    = '▶ Devam Et';
+      bst.style.display = '';
+      bp.style.display  = 'none';
+    } else {
+      bs.style.display  = '';
+      bs.textContent    = '▶ Molayı Başlat';
+      bst.style.display = 'none';
+      bp.style.display  = 'none';
+    }
+    bs.disabled = (!paused && remaining <= 0);
+    bs.style.opacity = (!paused && remaining <= 0) ? '0.45' : '1';
+
     const used = TOTAL - Math.max(0, remaining);
     document.getElementById('totalDisplay').textContent = fmt(used);
-
-    // Session list visibility
     document.getElementById('sessionList').style.display = sessions.length ? '' : 'none';
   }
 
   function renderSessions() {
-    const el = document.getElementById('sessionItems');
-    el.innerHTML = sessions.map((s, i) => `
+    document.getElementById('sessionItems').innerHTML = sessions.map((s, i) => `
       <div class="session-item">
         <div class="session-top">
           <span class="session-name">#${i+1} — ${s.type}</span>
@@ -323,51 +499,70 @@
     render();
   }
 
+  /* ── Timer controls ── */
   function startLive() {
-    if (remaining <= 0) return;
+    if (!paused && remaining <= 0) return;
     running = true;
-    activeStart = new Date();
+    paused  = false;
+    if (!activeStart) {
+      activeStart = new Date();
+      pausedElapsed = 0;
+    }
     document.getElementById('statusText').textContent = 'Mola başladı — ' + fmtClock(activeStart);
     ticker = setInterval(() => { remaining--; render(); }, 1000);
     render();
   }
 
+  function pauseLive() {
+    clearInterval(ticker);
+    paused = true;
+    running = false;
+    render();
+  }
+
   function stopLive() {
     clearInterval(ticker);
-    running = false;
     const now = new Date();
     const elapsed = activeStart ? Math.round((now - activeStart) / 1000) : 0;
     if (elapsed > 0) {
       sessions.push({ type: 'canlı', label: fmt(elapsed), secs: elapsed, startedAt: activeStart, endedAt: now });
     }
+    running = false;
+    paused  = false;
     activeStart = null;
+    pausedElapsed = 0;
     renderSessions();
   }
 
+  /* ── Manual ── */
   function addManual() {
     document.getElementById('errorMsg').textContent = '';
-    const val = document.getElementById('manualInput').value;
-    const secs = parseInput(val);
+    const secs = parseInput(inputVal);
     if (!secs || secs <= 0) {
-      document.getElementById('errorMsg').textContent = 'Geçerli bir süre girin. Örnek: 10, 5:30';
+      document.getElementById('errorMsg').textContent = 'Geçerli bir süre girin. Örnek: 10 ya da 5:30';
       return;
     }
     if (secs > remaining) {
       document.getElementById('errorMsg').textContent = `Kalan süreyi (${fmt(remaining)}) aşamazsınız!`;
       return;
     }
-    const now = new Date();
+    const now   = new Date();
     const start = new Date(now.getTime() - secs * 1000);
     sessions.push({ type: 'manuel', label: fmt(secs), secs, startedAt: start, endedAt: now });
     remaining -= secs;
-    document.getElementById('manualInput').value = '';
+    inputVal = '';
+    renderFakeInput();
+    closeNumpad();
     renderSessions();
   }
 
   function resetAll() {
     clearInterval(ticker);
-    running = false; activeStart = null; remaining = TOTAL; sessions = [];
-    document.getElementById('manualInput').value = '';
+    running = false; paused = false; activeStart = null; pausedElapsed = 0;
+    remaining = TOTAL; sessions = [];
+    inputVal = '';
+    renderFakeInput();
+    closeNumpad();
     document.getElementById('errorMsg').textContent = '';
     renderSessions();
   }
